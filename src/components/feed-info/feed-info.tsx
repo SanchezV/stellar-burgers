@@ -1,6 +1,10 @@
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../src/services/store';
+import {
+  AppDispatch,
+  RootState,
+  useDispatch,
+  useSelector
+} from '../../../src/services/store';
 import { fetchFeeds } from '../../slices/orders-slice';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
@@ -12,7 +16,7 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const { orders } = useSelector((state: RootState) => state.orders);
 
   useEffect(() => {

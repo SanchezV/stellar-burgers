@@ -14,29 +14,7 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { getCookie, setCookie } from '../../utils/cookie';
-
-const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
-  const location = useLocation();
-
-  const cookieToken = getCookie('accessToken');
-  const lsToken = localStorage.getItem('accessToken');
-  const isAuth = Boolean(cookieToken || lsToken);
-
-  if (cookieToken && !lsToken) {
-    localStorage.setItem('accessToken', cookieToken);
-  }
-
-  if (lsToken && !cookieToken) {
-    setCookie('accessToken', lsToken);
-  }
-
-  if (!isAuth) {
-    return <Navigate to='/login' state={{ from: location }} replace />;
-  }
-
-  return element;
-};
+import { ProtectedRoute } from '../protected-rout/ProtectedRoute';
 
 const App = () => {
   const location = useLocation();
@@ -96,7 +74,10 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title='Ингредиент' onClose={() => window.history.back()}>
+              <Modal
+                title='Детали нгредиента'
+                onClose={() => window.history.back()}
+              >
                 <IngredientDetails />
               </Modal>
             }

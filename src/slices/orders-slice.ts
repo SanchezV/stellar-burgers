@@ -27,9 +27,10 @@ export const fetchFeeds = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await burgerApi.getFeedsApi();
-      return data.orders;
-    } catch (err: any) {
-      return rejectWithValue(err.message || 'Ошибка загрузки заказов');
+      console.log('API response:', data); // Проверяем ответ API
+      return data?.orders || [];
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
   }
 );
