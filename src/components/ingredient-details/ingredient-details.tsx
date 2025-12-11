@@ -1,29 +1,19 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
-import { fetchIngredients } from '../../slices/ingredients-slice';
+
 import { useParams } from 'react-router-dom';
-import { RootState, useDispatch, useSelector } from '../../services/store';
+import { useSelector } from '../../services/store';
+import { selectIngredients } from '../../slices/ingredients-slice';
 
 export const IngredientDetails: FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch();
+  const id = String(Object.values(useParams()));
 
-  const { ingredients, loading } = useSelector(
-    (state: RootState) => state.ingredients
-  );
-
-  useEffect(() => {
-    if (ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length]);
-
-  const ingredientData = ingredients.find(
+  const ingredientData = useSelector(selectIngredients).find(
     (ingredient) => ingredient._id === id
   );
 
-  if (loading || !ingredientData) {
+  if (!ingredientData) {
     return <Preloader />;
   }
 

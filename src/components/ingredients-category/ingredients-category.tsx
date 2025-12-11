@@ -2,19 +2,20 @@ import { forwardRef, useMemo } from 'react';
 import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
-import { RootState, useSelector } from '../../services/store';
+import { selectBurgerConstructor } from '../../slices/burger-slice';
+import { useSelector } from '../../services/store';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
   /** DO: взять переменную из стора */
-  const burgerConstructor = useSelector((state: RootState) => state.burger);
+  const burgerConstructor = useSelector(selectBurgerConstructor);
 
   const ingredientsCounters = useMemo(() => {
-    const { bun, items } = burgerConstructor;
+    const { bun, ingredients } = burgerConstructor;
     const counters: { [key: string]: number } = {};
-    items.forEach((ingredient: TIngredient) => {
+    ingredients.forEach((ingredient: TIngredient) => {
       if (!counters[ingredient._id]) counters[ingredient._id] = 0;
       counters[ingredient._id]++;
     });
@@ -32,5 +33,3 @@ export const IngredientsCategory = forwardRef<
     />
   );
 });
-
-IngredientsCategory.displayName = 'IngredientsCategory';

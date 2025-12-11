@@ -1,35 +1,54 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { RootState, useDispatch, useSelector } from '../../services/store';
+
 import { TIngredient, TTabMode } from '@utils-types';
-import { BurgerIngredientsUI } from '.././ui/burger-ingredients';
-import { fetchIngredients } from '../../slices/ingredients-slice';
-export const BurgerIngredients = () => {
-  const dispatch = useDispatch();
-  const { ingredients, loading } = useSelector(
-    (state: RootState) => state.ingredients
-  );
+import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { selectIngredients } from '../../slices/ingredients-slice';
+import { useSelector } from '../../services/store';
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
+export const BurgerIngredients: FC = () => {
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
-  const buns: TIngredient[] = ingredients.filter((i) => i.type === 'bun');
-  const mains: TIngredient[] = ingredients.filter((i) => i.type === 'main');
-  const sauces: TIngredient[] = ingredients.filter((i) => i.type === 'sauce');
+  const buns = ingredients.filter((ing: TIngredient) => ing.type === 'bun');
+  const mains = ingredients.filter((ing: TIngredient) => ing.type === 'main');
+  const sauces = ingredients.filter((ing: TIngredient) => ing.type === 'sauce');
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
   const titleSaucesRef = useRef<HTMLHeadingElement>(null);
 
-  const [bunsRef, inViewBuns] = useInView({ threshold: 0 });
-  const [mainsRef, inViewFilling] = useInView({ threshold: 0 });
-  const [saucesRef, inViewSauces] = useInView({ threshold: 0 });
+  const [bunsRef, inViewBuns] = useInView({
+    threshold: 0
+  });
 
-  if (loading) {
-    return <div>Загрузка ингредиентов...</div>;
-  }
+  const [mainsRef, inViewFilling] = useInView({
+    threshold: 0
+  });
+
+  const [saucesRef, inViewSauces] = useInView({
+    threshold: 0
+  });
+
+  useEffect(() => {
+    if (inViewBuns) {
+      setCurrentTab('bun');
+    } else if (inViewSauces) {
+      setCurrentTab('sauce');
+    } else if (inViewFilling) {
+      setCurrentTab('main');
+    }
+  }, [inViewBuns, inViewFilling, inViewSauces]);
+
+  const onTabClick = (tab: string) => {
+    setCurrentTab(tab as TTabMode);
+    if (tab === 'bun')
+      titleBunRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'main')
+      titleMainRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'sauce')
+      titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <BurgerIngredientsUI
@@ -43,7 +62,7 @@ export const BurgerIngredients = () => {
       bunsRef={bunsRef}
       mainsRef={mainsRef}
       saucesRef={saucesRef}
-      onTabClick={(val: string) => setCurrentTab(val as TTabMode)}
+      onTabClick={onTabClick}
     />
   );
 };
