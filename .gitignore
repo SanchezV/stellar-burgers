@@ -2,3 +2,8 @@ node_modules
 .env
 .idea
 dist
+# Отчеты тестового покрытия
+coverage/
+*.lcov
+.coverage
+.nyc_output/
