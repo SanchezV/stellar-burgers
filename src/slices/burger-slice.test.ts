@@ -14,7 +14,6 @@ const mockBun: TIngredient = {
   image: 'https://code.s3.yandex.net/react/code/bun-02.png',
   image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
   image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
-  __v: 0
 };
 
 const mockIngredient: TIngredient = {
@@ -29,7 +28,6 @@ const mockIngredient: TIngredient = {
   image: 'https://code.s3.yandex.net/react/code/meat-04.png',
   image_mobile: 'https://code.s3.yandex.net/react/code/meat-04-mobile.png',
   image_large: 'https://code.s3.yandex.net/react/code/meat-04-large.png',
-  __v: 0
 };
 
 const mockSauce: TIngredient = {
@@ -44,7 +42,6 @@ const mockSauce: TIngredient = {
   image: 'https://code.s3.yandex.net/react/code/sauce-02.png',
   image_mobile: 'https://code.s3.yandex.net/react/code/sauce-02-mobile.png',
   image_large: 'https://code.s3.yandex.net/react/code/sauce-02-large.png',
-  __v: 0
 };
 
 describe('Редьюсер конструктора бургера', () => {
